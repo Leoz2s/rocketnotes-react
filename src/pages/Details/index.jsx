@@ -1,4 +1,6 @@
 import {Container, Links, Content} from './styles.js';
+import { Link } from 'react-router-dom';
+
 import {Button} from '../../components/Button';
 import {Header} from '../../components/Header';
 import {Section} from '../../components/Section';
@@ -36,7 +38,9 @@ export function Details() {
             <Tag title="node.js" />
           </Section>
 
+        <Link to="/">
           <Button title="Return" />
+        </Link>
 
         </Content>
       </main>

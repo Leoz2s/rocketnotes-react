@@ -1,5 +1,6 @@
 import {Container, Form, Background} from './styles';
 import {FiMail, FiLock, FiUser} from 'react-icons/fi';
+import {Link} from 'react-router-dom';
 
 import {Input} from '../../components/Input';
 import {Button} from '../../components/Button';
@@ -35,7 +36,7 @@ export function SignUp() {
 
         <Button title="Register" />
 
-        <a href="#">Return to Log In</a>
+        <Link to="/">Return to Log In</Link>
       </Form>
 
     </Container>

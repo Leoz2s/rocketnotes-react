@@ -1,4 +1,5 @@
 import {Container, Form} from './styles';
+import {Link} from 'react-router-dom';
 
 import {Header} from "../../components/Header";
 import {Section} from "../../components/Section";
@@ -16,7 +17,7 @@ export function New() {
       <Form>
         <header>
           <h1>Create note</h1>
-          <a href="/">Return</a>
+          <Link to="/">Return</Link>
         </header>
 
         <Input
