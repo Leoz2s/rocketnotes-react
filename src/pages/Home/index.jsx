@@ -42,6 +42,36 @@ export function Home() {
             }} />
           </Link>
 
+          <Link to='details/1'>
+            <Note data={{
+              title: "React",
+              tags: [
+                {id: '1', name: 'React'},
+                {id: '2', name: 'styled-components'}
+              ]
+            }} />
+          </Link>
+
+          <Link to='details/1'>
+            <Note data={{
+              title: "React",
+              tags: [
+                {id: '1', name: 'React'},
+                {id: '2', name: 'styled-components'}
+              ]
+            }} />
+          </Link>
+
+          <Link to='details/1'>
+            <Note data={{
+              title: "React",
+              tags: [
+                {id: '1', name: 'React'},
+                {id: '2', name: 'styled-components'}
+              ]
+            }} />
+          </Link>
+
         </Section>
       </Content>
 
