@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {api} from "../../services/api";
-import {FiMail, FiLock, FiUser} from 'react-icons/fi';
 
+import {FiMail, FiLock, FiUser} from 'react-icons/fi';
 import {Container, Form, Background} from './styles';
 import {Input} from '../../components/Input';
 import {Button} from '../../components/Button';
