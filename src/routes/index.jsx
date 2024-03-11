@@ -9,7 +9,6 @@ export function Routes() {
 
   return(
     <BrowserRouter>
-        {console.log(user)}
         {user ? <AppRoutes /> : <AuthRoutes />}
     </BrowserRouter>
   );
