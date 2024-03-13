@@ -14,20 +14,6 @@ export const Container = styled.div`
     grid-area: content;
     overflow-y: auto;
   }
-
-  .tags {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-
-    > div {
-      width: 48%;
-
-      input {
-        width: fit-content;
-      }
-    }
-  }
 `;
 
 export const Form = styled.form`
@@ -44,6 +30,18 @@ export const Form = styled.form`
     a {
       font-size: 2rem;
       color: ${({theme}) => theme.COLORS.GRAY_100};
+    }
+  }
+
+  > section {
+    .tags {
+      display: flex;
+      gap: 1.9rem;
+      flex-wrap: wrap;
+
+      > div {
+        width: 26.5rem;
+      }
     }
   }
 `;
