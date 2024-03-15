@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {FiPlus, FiSearch} from 'react-icons/fi';
 import { api } from '../../services/api';
 
@@ -11,13 +11,16 @@ import {Note} from '../../components/Note';
 import {ButtonText} from '../../components/ButtonText';
 
 export function Home() {
+  const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
   const [tagsSelected, setTagsSelected] = useState([]);
+  const [notes, setNotes] = useState([]);
+
+  const navigate = useNavigate();
 
   function handleTagSelected(tagName) {
-    if(tagName == "all") {
-      setTagsSelected([]);
-      return
+    if(tagName === "all") {
+      return setTagsSelected([]);
     };
 
     const alreadySelected = tagsSelected.includes(tagName);
@@ -29,6 +32,10 @@ export function Home() {
     };
   };
 
+  function handleDetails(id) {
+    navigate(`/details/${id}`);
+  };
+
   useEffect(() => {
     async function fetchTags() {
       const response = await api.get("/tags");
@@ -37,6 +44,15 @@ export function Home() {
 
     fetchTags();
   }, []);
+
+  useEffect(() => {
+    async function fetchNotes() {
+      const response = await api.get(`/notes?title=${search}&tags=${tagsSelected}`);
+      setNotes(response.data);
+    };
+
+    fetchNotes();
+  }, [tagsSelected, search]);
 
   return(
     <Container>
@@ -68,52 +84,32 @@ export function Home() {
       </Menu>
 
       <Search>
-        <Input placeholder="Search for the title" icon={FiSearch} />
+        <Input 
+          placeholder="Search for the title" 
+          icon={FiSearch} 
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
       </Search>
 
       <Content>
         <Section title="My notes">
-
-          <Link to='details/1'>
-            <Note data={{
-              title: "React",
-              tags: [
-                {id: '1', name: 'React'},
-                {id: '2', name: 'styled-components'}
-              ]
-            }} />
-          </Link>
-
-          <Link to='details/1'>
-            <Note data={{
-              title: "React",
-              tags: [
-                {id: '1', name: 'React'},
-                {id: '2', name: 'styled-components'}
-              ]
-            }} />
-          </Link>
-
-          <Link to='details/1'>
-            <Note data={{
-              title: "React",
-              tags: [
-                {id: '1', name: 'React'},
-                {id: '2', name: 'styled-components'}
-              ]
-            }} />
-          </Link>
-
-          <Link to='details/1'>
-            <Note data={{
-              title: "React",
-              tags: [
-                {id: '1', name: 'React'},
-                {id: '2', name: 'styled-components'}
-              ]
-            }} />
-          </Link>
-
+          {
+            notes.map(note => (
+              <Note
+                key={String(note.id)}
+                data={note}
+                onClick={() => handleDetails(note.id)}
+              />
+            ))
+          }
+          {/* <Note data={{
+            title: {note},
+            tags: [
+              {id: '1', name: 'React'},
+              {id: '2', name: 'styled-components'}
+            ]
+          }} /> */}
         </Section>
       </Content>
 

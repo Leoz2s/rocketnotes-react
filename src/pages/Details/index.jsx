@@ -1,6 +1,8 @@
-import {Container, Links, Content} from './styles.js';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { api } from '../../services/api.js';
 
+import {Container, Links, Content} from './styles.js';
 import {Button} from '../../components/Button';
 import {Header} from '../../components/Header';
 import {Section} from '../../components/Section';
@@ -8,42 +10,87 @@ import {Tag} from '../../components/Tag';
 import {ButtonText} from '../../components/ButtonText';
 
 export function Details() {
+  const [data, setData] = useState(null);
+  
+  const params = useParams();
+  const navigate = useNavigate();
+
+  function handleBack() {
+    navigate("/");
+  };
+
+  async function handleRemove() {
+    const confirm = window.confirm("Do you want to delete this note?");
+
+    if(confirm) {
+      await api.delete(`/notes/${params.id}`);
+      navigate("/");
+    };
+  };
+
+  useEffect(() => {
+    async function fetchNote(){
+      const response = await api.get(`/notes/${params.id}`);
+      setData(response.data);
+    };
+
+    fetchNote();
+  }, []);
 
   return(
     <Container>
       <Header />
       
-      <main>
-        <Content>
-          <ButtonText title="Delete note" />
+      {
+        data &&
+        <main>
+          <Content>
+            <ButtonText 
+              title="Delete note" 
+              onClick={handleRemove}
+            />
 
-          <h1>Introduction to React</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Illum accusantium culpa sunt hic dolorum. Harum minima quam nulla 
-            aliquam laborum, accusamus assumenda veniam alias, dolore,
-            tempore quis vitae consectetur dicta!
-          </p>
+            <h1>{data.title}</h1>
+            <p>{data.description}</p>
 
-          <Section title="Useful links">
-            <Links>
-              <li><a href="#">Link 1</a></li>  
-              <li><a href="#">Link 2</a></li>
-              <li><a href="#">Link 3</a></li>  
-            </Links>  
-          </Section>
-          
-          <Section title="Tags">
-            <Tag title="express" />
-            <Tag title="node.js" />
-          </Section>
+            { 
+              data.links &&
+              <Section title="Useful links">
+                <Links>
+                  {
+                    data.links.map(link => (
+                      <li key={String(link.id)}>
+                        <a href={link.url} target="_blank" >
+                          {link.url}
+                        </a>
+                      </li>  
+                    ))
+                  }
+                </Links>  
+              </Section>
+            }
+            
+            {
+              data.tags &&
+              <Section title="Tags">
+                {
+                  data.tags.map(tag => (
+                    <Tag 
+                      key={String(tag.id)}
+                      title={tag.name}
+                    />
+                  ))
+                }
+              </Section>
+            }
 
-        <Link to="/">
-          <Button title="Return" />
-        </Link>
-
-        </Content>
-      </main>
+            <Button 
+              title="Return" 
+              onClick={handleBack}
+            />
+          </Content>
+        </main>
+      }
     </Container>
   );
 };
